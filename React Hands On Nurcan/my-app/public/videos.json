@@ -1,0 +1,17 @@
+[
+{
+ "title" : "Terminator Genisys",
+ "genre" : "SciFi",
+ "description" : "When John Connor, leader of the human resistance, sends Sgt. Kyle Reese back to 1984 to protect Sarah Connor and safeguard the future, an unexpected turn of events creates a fractured timeline."
+},
+{
+ "title" : "The Lord of the Rings",
+ "genre" : "Fantasy",
+ "description" : "A meek hobbit of the Shire and eight companions set out on a journey to Mount Doom to destroy the One Ring and the dark lord Sauron."
+},
+{
+ "title" : "Apollo 13",
+ "genre" : "Drama",
+ "description" : "NASA must devise a strategy to return Apollo 13 to Earth safely after the spacecraft undergoes massive internal damage putting the lives of the three astronauts on board in jeopardy."
+}
+]

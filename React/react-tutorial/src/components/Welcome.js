@@ -2,7 +2,12 @@ import React, {Component} from 'react'
 
 class Welcome extends Component{
     render(){
-        return <h1>Class Component</h1>
+        return (
+            <div>
+
+                <h1>Message is {this.props.message} and the code is {this.props.messageCode}</h1>
+            </div>
+        )
     }
 }
 

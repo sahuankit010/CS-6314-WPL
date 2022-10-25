@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PW6</title>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=qwertyuioplkjhgfdsazxcvbnmkijnbvfghj&callback=initialize&libraries=places"></script>
+    <style type="text/css">
+        #map {
+            height: 100%;
+        }
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h5>Find Pharmacy</h5>
+        <div>
+          <input type="textbox" class="form-control" placeholder="Enter Pharmacy address..." id="add"/>
+        </div>
+        <input type="submit" class="btn btn-success" value="Search" onclick="hehe()" id="submit"/>
+    </div>
+    <div style="height: 90%; width:100%" id="map"></div>
+</body>
+
+<script>
+    var map;
+    var service;
+    function initialize() {
+      var utd = new google.maps.LatLng(32.985771, -96.750003 );
+
+      map = new google.maps.Map(document.getElementById('map'), {
+          center: utd,
+          zoom: 10
+        });
+
+    }
+    var add;
+    function hehe() {
+        add = document.getElementById("add").value;
+        const geocoder = new google.maps.Geocoder();
+        var loc;
+        var pharma;
+        geocoder.geocode({ address: add }, function (results, status) {
+            if (status === "OK") {
+                loc = results[0].geometry.location;
+                var pharma = new google.maps.LatLng(loc.lat(), loc.lng());
+                map = new google.maps.Map(document.getElementById("map"), {
+                    center: loc,
+                    zoom: 13,
+                });
+                map.setCenter(loc);
+
+                let request = {
+                    location: pharma,
+                    radius: '1500',
+                    type: ["pharmacy"],
+                };
+
+                service = new google.maps.places.PlacesService(map);
+                service.nearbySearch(request, (results, status) => {
+                    if (status == google.maps.places.PlacesServiceStatus.OK) {
+                        for (let i = 0; i < results.length; i++) {
+                            new google.maps.Marker({
+                                map,
+                                title: results[i].name,
+                                position: results[i].geometry.location,
+                            });
+                        }
+                    }
+                });
+            }
+            else {
+                console.log("error");
+            }
+        });
+    }
+
+</script>
+
+</html>

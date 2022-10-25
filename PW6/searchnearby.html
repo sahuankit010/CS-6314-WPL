@@ -1,71 +1,101 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Search Nearby</title>
-    
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHD5Azdp9yEur5KnVYJAUNf8ZAw6m40F4&callback=initialize&libraries=places"
-      defer
-    ></script>
-    <style type="text/css">
-      /* Always set the map height explicitly to define the size of the div
+
+<head>
+  <title>Search Nearby</title>
+
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHD5Azdp9yEur5KnVYJAUNf8ZAw6m40F4&callback=initialize&libraries=places"
+    defer></script>
+  <style type="text/css">
+    /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
-      #map {
-        height: 100%;
-      }
+    #map {
+      height: 100%;
+    }
 
-      /* Optional: Makes the sample page fill the window. */
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-    <script>
-
-
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+      height: 70%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <script>
+    var add
     var map;
     var service;
+    //var geocoder;
 
     function initialize() {
-      
-      var utd = new google.maps.LatLng(32.983049, -96.772191);
+      var utd = new google.maps.LatLng(32.985771, -96.750003 );
 
       map = new google.maps.Map(document.getElementById('map'), {
           center: utd,
-          zoom: 18
+          zoom: 12
         });
 
       var request = {
         location: utd,
         radius: '1500',
-        type: ['pharmacies']
+        type: ['pharmacy']
       };
 
-      service = new google.maps.places.PlacesService(map);
-      service.nearbySearch(request, callback);
     }
+    function clicked() {
 
-    function callback(results, status) {
-      if (status == google.maps.places.PlacesServiceStatus.OK) {
-        for (var i = 0; i < results.length; i++) { 
+      add = document.getElementById("add").value;
+      const geocoder = new google.maps.Geocoder();
 
-          new google.maps.Marker({
-            map,
-            title: results[i].name,
-            position: results[i].geometry.location,
+      geocoder.geocode({ address: add }, function (results, status) {
+        console.log(geocoder);
+        if (status === "OK") {
+          let coordinates = results[0].geometry.location;
+          map = new google.maps.Map(document.getElementById("map"), {
+            center: coordinates,
+            zoom: 16
           });
+          map.setCenter(coordinates);
 
 
+          let request = {
+            location: coordinates,
+            radius: '1500',
+            type: ['pharmacy']
+          };
+
+          service = new google.maps.places.PlacesService(map);
+          service.nearbySearch(request, (results, status) => {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+              for (let i = 0; i < results.length; i++) {
+                new google.maps.Marker({
+                  map,
+                  title: results[i].name,
+                  position: results[i].geometry.location,
+                });
+              }
+            }
+          });
         }
-      }
+        else {
+          console.log("error");
+        }
+      });
     }
 
 
-    </script>
-  </head>
-  <body>
-    <div id="map"></div>
-  </body>
+  </script>
+</head>
+
+<body>
+  <form>
+    Address : <input type="text" id="add" />
+    <input type="submit" id="submit" onclick="clicked()" />
+  </form>
+  <div id="map"></div>
+
+</body>
+</body>
+
 </html>
